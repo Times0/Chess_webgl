@@ -1,0 +1,128 @@
+{
+    "1-ill-bishop" : { 
+        "input" : ["d2d4", "d7d5", "c1g5", "f8b5", "f7f6", "g5d8", "g5h4", "c8b7", "c8d8", "c8f5"],
+        "output" : "wr,wn,,wq,wk,wb,wn,wr,wp,wp,wp,,wp,wp,wp,wp,,,,,,,,,,,,wp,,,,wb,,,,bp,,bb,,,,,,,,bp,,,bp,bp,bp,,bp,,bp,bp,br,bn,,bq,bk,bb,bn,br,"},
+    "1-ill-diagonal-obstacle" : { 
+        "input" : ["c1e3", "f1d3", "d2d3", "c8e6", "f8d6", "d7d6", "c1f4", "c8f5", "c2c3", "c7c6", "d1a4", "d8a5"],
+        "output" : "wr,wn,,,wk,wb,wn,wr,wp,wp,,,wp,wp,wp,wp,,,wp,wp,,,,,wq,,,,,wb,,,bq,,,,,bb,,,,,bp,bp,,,,,bp,bp,,,bp,bp,bp,bp,br,bn,,,bk,bb,bn,br,"},
+    "1-ill-knight-1" : { 
+        "input" : ["b1d2", "b1c3", "g8e7", "g8f6", "c3b4", "c3e4"],
+        "output" : "wr,,wb,wq,wk,wb,wn,wr,wp,wp,wp,wp,wp,wp,wp,wp,,,,,,,,,,,,,wn,,,,,,,,,,,,,,,,,bn,,,bp,bp,bp,bp,bp,bp,bp,bp,br,bn,bb,bq,bk,bb,,br,"},
+    "1-ill-line-obstacle" : { 
+        "input" : ["a1a3", "a2a4", "a8a6", "a7a5", "a1a3", "a8a6", "a3h3", "a6h6", "h3e3", "h6e6", "d2d3", "d7d6", "f2f3", "f7f6", "e3c3", "e3g3", "b2b3", "e6c6", "e6g6"],
+        "output" : ",wn,wb,wq,wk,wb,wn,wr,,,wp,,wp,,wp,wp,,wp,,wp,wr,wp,,,wp,,,,,,,,bp,,,,,,,,,,,bp,br,bp,,,,bp,bp,,bp,,bp,bp,,bn,bb,bq,bk,bb,bn,br,"},
+    "1-ill-pawn-1" : { 
+        "input" : ["e2e4", "e7e5", "e4e5", "d2d4", "e5f4", "f7f5", "f2f1", "f1a6", "a7a6", "a7b6", "b7a6", "d4d5", "a7a6", "c7c5"],
+        "output" : "wr,wn,wb,wq,wk,,wn,wr,wp,wp,wp,,,wp,wp,wp,,,,,,,,,,,,,wp,,,,,,bp,wp,bp,bp,,,bp,,,,,,,,bp,,,bp,,,bp,bp,br,bn,bb,bq,bk,bb,bn,br,"},
+    "1-ill-rook-1" : { 
+        "input" : ["a1a2", "a2a4", "a8a5", "b7b5", "a4b5", "a7a5", "a1b4", "a1a4", "a8b8", "a8a7", "a4f4"],
+        "output" : ",wn,wb,wq,wk,wb,wn,wr,,wp,wp,wp,wp,wp,wp,wp,,,,,,,,,,,,,,wr,,,bp,wp,,,,,,,,,,,,,,,br,,bp,bp,bp,bp,bp,bp,,bn,bb,bq,bk,bb,bn,br,"},
+    "1-leg-bish-knight" : { 
+        "input" : ["e2e4", "e7e5", "g1f3", "b8c6", "d2d3", "g8f6", "c1g5", "f8e7"],
+        "output" : "wr,wn,,wq,wk,wb,,wr,wp,wp,wp,,,wp,wp,wp,,,,wp,,wn,,,,,,,wp,,,,,,,,bp,,wb,,,,bn,,,bn,,,bp,bp,bp,bp,bb,bp,bp,bp,br,,bb,bq,bk,,,br,"},
+    "1-leg-bishop-1" : { 
+        "input" : ["d2d4", "d7d5", "c1g5", "g8f6", "g5f6", "g7f6", "e2e3", "f8h6", "f1e2", "c8d7"],
+        "output" : "wr,wn,,wq,wk,,wn,wr,wp,wp,wp,,wb,wp,wp,wp,,,,,wp,,,,,,,wp,,,,,,,,bp,,,,,,,,,,bp,,bb,bp,bp,bp,bb,bp,bp,,bp,br,bn,,bq,bk,,,br,"},
+    "1-leg-knight-1" : { 
+        "input" : ["b1c3", "d7d5", "c3d5", "g8f6", "g1f3", "b8c6", "d5f6", "e7f6", "e2e4"],
+        "output" : "wr,,wb,wq,wk,wb,,wr,wp,wp,wp,wp,,wp,wp,wp,,,,,,wn,,,,,,,wp,,,,,,,,,,,,,,bn,,,bp,,,bp,bp,bp,,,bp,bp,bp,br,,bb,bq,bk,bb,,br,"},
+    "1-leg-obstacle" : { 
+        "input" : ["e2e3", "d7d5", "g1f3", "g8f6"],
+        "output" : "wr,wn,wb,wq,wk,wb,,wr,wp,wp,wp,wp,,wp,wp,wp,,,,,wp,wn,,,,,,,,,,,,,,bp,,,,,,,,,,bn,,,bp,bp,bp,,bp,bp,bp,bp,br,bn,bb,bq,bk,bb,,br,"},
+    "1-leg-pawn-1" : { 
+        "input" : ["e2e4", "e7e5", "d2d4", "e5d4", "f2f3", "d4d3", "c2d3", "d7d5", "e4e5", "d5d4"],
+        "output" : "wr,wn,wb,wq,wk,wb,wn,wr,wp,wp,,,,,wp,wp,,,,wp,,wp,,,,,,bp,,,,,,,,,wp,,,,,,,,,,,,bp,bp,bp,,,bp,bp,bp,br,bn,bb,bq,bk,bb,bn,br,"},
+    "2-ill-chess-1" : { 
+        "input" : ["e2e4", "f7f6", "d1h5", "a7a6", "g7g6"],
+        "output" : "wr,wn,wb,,wk,wb,wn,wr,wp,wp,wp,wp,,wp,wp,wp,,,,,,,,,,,,,wp,,,,,,,,,,,wq,,,,,,bp,bp,,bp,bp,bp,bp,bp,,,bp,br,bn,bb,bq,bk,bb,bn,br,"},
+    "2-ill-move-after-chess" : { 
+        "input" : ["e2e4", "d7d5", "f1b5", "e8d7", "c7c6"],
+        "output" : "wr,wn,wb,wq,wk,,wn,wr,wp,wp,wp,wp,,wp,wp,wp,,,,,,,,,,,,,wp,,,,,wb,,bp,,,,,,,bp,,,,,,bp,bp,,,bp,bp,bp,bp,br,bn,bb,bq,bk,bb,bn,br,"},
+    "2-leg-chess-1" : { 
+        "input" : ["e2e4", "f7f6", "d1h5", "g7g6"],
+        "output" : "wr,wn,wb,,wk,wb,wn,wr,wp,wp,wp,wp,,wp,wp,wp,,,,,,,,,,,,,wp,,,,,,,,,,,wq,,,,,,bp,bp,,bp,bp,bp,bp,bp,,,bp,br,bn,bb,bq,bk,bb,bn,br,"},
+    "2-leg-chess-2" : { 
+        "input" : ["e2e4", "e7e5", "f1b5", "f7f5", "b1c3", "g8f6", "d2d3", "g7g5", "c3d5", "c7c6", "d1h5", "f6h5"],
+        "output" : "wr,,wb,,wk,,wn,wr,wp,wp,wp,,,wp,wp,wp,,,,wp,,,,,,,,,wp,,,,,wb,,wn,bp,bp,bp,bn,,,bp,,,,,,bp,bp,,bp,,,,bp,br,bn,bb,bq,bk,bb,,br,"},
+    "3-ill-kside-castling-1" : {
+        "input" : ["e2e4", "e7e5", "f1c4", "e8g8", "g8f6", "e1g1", "g1f3", "f8b4", "e1g1", "e8e7", "a2a3", "e8g8", "e7e8", "a3b4", "e8g8", "h7h6"],
+        "output" : "wr,wn,wb,wq,,wr,wk,,,wp,wp,wp,,wp,wp,wp,,,,,,wn,,,,wp,wb,,wp,,,,,,,,bp,,,,,,,,,bn,,bp,bp,bp,bp,bp,,bp,bp,,br,bn,bb,bq,bk,,,br,"},
+    "3-ill-pawn-passing-1" : { 
+        "input" : ["e2e4", "c7c5", "e4e5", "e7e6", "a2a4", "g8e7", "a4a5", "e7f5", "e5f6"],
+        "output" : "wr,wn,wb,wq,wk,wb,wn,wr,,wp,wp,wp,,wp,wp,wp,,,,,,,,,,,,,,,,,wp,,bp,,wp,bn,,,,,,,bp,,,,bp,bp,,bp,,bp,bp,bp,br,bn,bb,bq,bk,bb,,br,"},
+    "3-ill-pawn-passing-2" : { 
+        "input" : ["e2e4", "e7e5", "d2d4", "g8f6", "b1c3", "f8b4", "d4d5", "c7c5", "g1f3", "d8b6", "d5c6"],
+        "output" : "wr,,wb,wq,wk,wb,,wr,wp,wp,wp,,,wp,wp,wp,,,wn,,,wn,,,,bb,,,wp,,,,,,bp,wp,bp,,,,,bq,,,,bn,,,bp,bp,,bp,,bp,bp,bp,br,bn,bb,,bk,,,br,"},
+    "3-ill-pawn-passing-3" : { 
+        "input" : ["e2e4", "b8c6", "e4e5", "d7d5", "g1f3", "e7e6", "e5d6", "d2d4"],
+        "output" : "wr,wn,wb,wq,wk,wb,,wr,wp,wp,wp,,,wp,wp,wp,,,,,,wn,,,,,,wp,,,,,,,,bp,wp,,,,,,bn,,bp,,,,bp,bp,bp,,,bp,bp,bp,br,,bb,bq,bk,bb,bn,br,"},
+    "3-ill-qside-castling-1" : { 
+        "input" : ["d2d4", "e7e6", "g1f3", "d7d5", "c1g5", "g8f6", "b1c3", "h7h6", "g5f6", "d8f6", "d1d3", "f8b4", "f3e5", "f6g5", "e1c1"],
+        "output" : "wr,,,,wk,wb,,wr,wp,wp,wp,,wp,wp,wp,wp,,,wn,wq,,,,,,bb,,wp,,,,,,,,bp,wn,,bq,,,,,,bp,,,bp,bp,bp,bp,,,bp,bp,,br,bn,bb,,bk,,,br,"},
+    "3-ill-qside-castling-2" : { 
+        "input" : ["d2d4", "d7d5", "c1f4", "g8f6", "g1f3", "e7e6", "b1d2", "c7c6", "e2e3", "d8b6", "b2b3", "f8a3", "d1e2", "e8g8", "e1c1"],
+        "output" : "wr,,,,wk,wb,,wr,wp,,wp,wn,wq,wp,wp,wp,bb,wp,,,wp,wn,,,,,,wp,,wb,,,,,,bp,,,,,,bq,bp,,bp,bn,,,bp,bp,,,,bp,bp,bp,br,bn,bb,,,br,bk,,"},
+    "3-leg-kside-castling-1" : { 
+        "input" : ["e2e4", "e7e5", "f1c4", "g8f6", "g1f3", "f8c5", "e1g1"],
+        "output" : "wr,wn,wb,wq,,wr,wk,,wp,wp,wp,wp,,wp,wp,wp,,,,,,wn,,,,,wb,,wp,,,,,,bb,,bp,,,,,,,,,bn,,,bp,bp,bp,bp,,bp,bp,bp,br,bn,bb,bq,bk,,,br,"},
+    "3-leg-kside-castling-2" : { 
+        "input" : ["e2e4", "e7e5", "f1c4", "d7d6", "g1f3", "c8g4", "d2d3", "b8c6", "c1e3", "d8e7", "b1c3", "e8c8"],
+        "output" : "wr,,,wq,wk,,,wr,wp,wp,wp,,,wp,wp,wp,,,wn,wp,wb,wn,,,,,wb,,wp,,bb,,,,,,bp,,,,,,bn,bp,,,,,bp,bp,bp,,bq,bp,bp,bp,,,bk,br,,bb,bn,br,"},
+    "3-leg-kside-castling-king-move" : { 
+        "input" : ["e2e4", "e7e5", "g1f3", "f8b4", "f1b5", "g8f6", "e1g1", "e8g8", "g1h1", "g8h8"],
+        "output" : "wr,wn,wb,wq,,wr,,wk,wp,wp,wp,wp,,wp,wp,wp,,,,,,wn,,,,bb,,,wp,,,,,wb,,,bp,,,,,,,,,bn,,,bp,bp,bp,bp,,bp,bp,bp,br,bn,bb,bq,,br,,bk,"},
+    "3-leg-pawn-passing" : { 
+        "input" : ["e2e4", "c7c5", "e4e5", "f7f5", "e5f6"],
+        "output" : "wr,wn,wb,wq,wk,wb,wn,wr,wp,wp,wp,wp,,wp,wp,wp,,,,,,,,,,,,,,,,,,,bp,,,,,,,,,,,wp,,,bp,bp,,bp,bp,,bp,bp,br,bn,bb,bq,bk,bb,bn,br,"},
+    "3-leg-promo-bbishop" : { 
+        "input" : ["a2a4", "b7b5", "a4b5", "a7a5", "a1a3", "a5a4", "a3c3", "a4a3", "h2h3", "a3a2", "h3h4", "a2a1b"],
+        "output" : "bb,wn,wb,wq,wk,wb,wn,wr,,wp,wp,wp,wp,wp,wp,,,,wr,,,,,,,,,,,,,wp,,wp,,,,,,,,,,,,,,,,,bp,bp,bp,bp,bp,bp,br,bn,bb,bq,bk,bb,bn,br,"},
+    "3-leg-promo-bknight" : { 
+        "input" : ["a2a4", "b7b5", "a4b5", "a7a5", "a1a3", "a5a4", "a3c3", "a4a3", "h2h3", "a3a2", "h3h4", "a2a1n"],
+        "output" : "bn,wn,wb,wq,wk,wb,wn,wr,,wp,wp,wp,wp,wp,wp,,,,wr,,,,,,,,,,,,,wp,,wp,,,,,,,,,,,,,,,,,bp,bp,bp,bp,bp,bp,br,bn,bb,bq,bk,bb,bn,br,"},
+    "3-leg-promo-bqueen" : { 
+        "input" : ["a2a4", "b7b5", "a4b5", "a7a5", "a1a3", "a5a4", "a3c3", "a4a3", "h2h3", "a3a2", "h3h4", "a2a1q"],
+        "output" : "bq,wn,wb,wq,wk,wb,wn,wr,,wp,wp,wp,wp,wp,wp,,,,wr,,,,,,,,,,,,,wp,,wp,,,,,,,,,,,,,,,,,bp,bp,bp,bp,bp,bp,br,bn,bb,bq,bk,bb,bn,br,"},
+    "3-leg-promo-brook" : { 
+        "input" : ["a2a4", "b7b5", "a4b5", "a7a5", "a1a3", "a5a4", "a3c3", "a4a3", "h2h3", "a3a2", "h3h4", "a2a1r"],
+        "output" : "br,wn,wb,wq,wk,wb,wn,wr,,wp,wp,wp,wp,wp,wp,,,,wr,,,,,,,,,,,,,wp,,wp,,,,,,,,,,,,,,,,,bp,bp,bp,bp,bp,bp,br,bn,bb,bq,bk,bb,bn,br,"},
+    "3-leg-promo-wbishop" : { 
+        "input" : ["a2a4", "a7a5", "b2b4", "a5b4", "a4a5", "b7b5", "a5a6", "a8a7", "c2c4", "a7b7", "a6a7", "b7b6", "a7a8b"],
+        "output" : "wr,wn,wb,wq,wk,wb,wn,wr,,,,wp,wp,wp,wp,wp,,,,,,,,,,bp,wp,,,,,,,bp,,,,,,,,br,,,,,,,,,bp,bp,bp,bp,bp,bp,wb,bn,bb,bq,bk,bb,bn,br,"},
+    "3-leg-promo-wknight" : { 
+        "input" : ["a2a4", "a7a5", "b2b4", "a5b4", "a4a5", "b7b5", "a5a6", "a8a7", "c2c4", "a7b7", "a6a7", "b7b6", "a7a8n"],
+        "output" : "wr,wn,wb,wq,wk,wb,wn,wr,,,,wp,wp,wp,wp,wp,,,,,,,,,,bp,wp,,,,,,,bp,,,,,,,,br,,,,,,,,,bp,bp,bp,bp,bp,bp,wn,bn,bb,bq,bk,bb,bn,br,"},
+    "3-leg-promo-wqueen-mat" : { 
+        "input" : ["e2e4", "f7f5", "e4f5", "g7g5", "d1f3", "f8g7", "f5f6", "g8h6", "f6g7", "h6g4", "g7h8q"],
+        "output" : "wr,wn,wb,,wk,wb,wn,wr,wp,wp,wp,wp,,wp,wp,wp,,,,,,wq,,,,,,,,,bn,,,,,,,,bp,,,,,,,,,,bp,bp,bp,bp,bp,,,bp,br,bn,bb,bq,bk,,,wq, 1-0"},
+    "3-leg-promo-wqueen" : { 
+        "input" : ["a2a4", "a7a5", "b2b4", "a5b4", "a4a5", "b7b5", "a5a6", "a8a7", "c2c4", "a7b7", "a6a7", "b7b6", "a7a8q"],
+        "output" : "wr,wn,wb,wq,wk,wb,wn,wr,,,,wp,wp,wp,wp,wp,,,,,,,,,,bp,wp,,,,,,,bp,,,,,,,,br,,,,,,,,,bp,bp,bp,bp,bp,bp,wq,bn,bb,bq,bk,bb,bn,br,"},
+    "3-leg-promo-wrook-mat" : { 
+        "input" : ["e2e4", "f7f5", "e4f5", "g7g5", "d1f3", "f8g7", "f5f6", "g8h6", "f6g7", "h6g4", "g7h8r"],
+        "output" : "wr,wn,wb,,wk,wb,wn,wr,wp,wp,wp,wp,,wp,wp,wp,,,,,,wq,,,,,,,,,bn,,,,,,,,bp,,,,,,,,,,bp,bp,bp,bp,bp,,,bp,br,bn,bb,bq,bk,,,wr, 1-0"},
+    "3-leg-promo-wrook" : { 
+        "input" : ["a2a4", "a7a5", "b2b4", "a5b4", "a4a5", "b7b5", "a5a6", "a8a7", "c2c4", "a7b7", "a6a7", "b7b6", "a7a8r"],
+        "output" : "wr,wn,wb,wq,wk,wb,wn,wr,,,,wp,wp,wp,wp,wp,,,,,,,,,,bp,wp,,,,,,,bp,,,,,,,,br,,,,,,,,,bp,bp,bp,bp,bp,bp,wr,bn,bb,bq,bk,bb,bn,br,"},
+    "3-leg-qside-castling-1" : { 
+        "input" : ["b2b4", "b7b5", "c2c4", "c7c5", "b1a3", "b8a6", "c1b2", "c8b7", "d1c2", "d8c7", "e1c1", "e8c8"],
+        "output" : ",,wk,wr,,wb,wn,wr,wp,wb,wq,wp,wp,wp,wp,wp,wn,,,,,,,,,wp,wp,,,,,,,bp,bp,,,,,,bn,,,,,,,,bp,bb,bq,bp,bp,bp,bp,bp,,,bk,br,,bb,bn,br,"},
+    "3-leg-qside-castling-2" : { 
+        "input" : ["e2e4", "e7e5", "b1c3", "b8c6", "b2b3", "f8c5", "c1b2", "d7d6", "d1e2", "g8f6", "e1c1"],
+        "output" : ",,wk,wr,,wb,wn,wr,wp,wb,wp,wp,wq,wp,wp,wp,,wp,wn,,,,,,,,,,wp,,,,,,bb,,bp,,,,,,bn,bp,,bn,,,bp,bp,bp,,,bp,bp,bp,br,,bb,bq,bk,,,br,"},
+    "4-leg-mat-1" : { 
+        "input" : ["e2e4", "e7e5", "f2f4", "d7d5", "b1c3", "d5d4", "c3e2", "f8b4", "f4f5", "b8c6", "c2c3", "d4c3", "e2c3", "f7f6", "g2g4", "c6d4", "d2d3", "g8e7", "g4g5", "d8d6", "a2a3", "b4c3", "b2c3", "d4b5", "g1e2", "e8g8", "g5g6", "c8d7", "d3d4", "e5d4", "e2d4", "b5d4", "d1h5", "g8f7", "h7h6", "c3d4", "d6d4", "a1a2", "d4e4", "a2e2", "e4h1", "e2e7", "a8e8", "e7e8", "f8e8", "e1f2", "d7c6", "c1h6", "g7h6", "f1c4", "g8h8", "h5h6"],
+        "output" : ",,,,,,,bq,,,,,,wk,,wp,wp,,,,,,,,,,wb,,,,,,,,,,,wp,,,,,bb,,,bp,wp,wq,bp,bp,bp,,,,,,,,,,br,,,bk, 1-0"},
+    "4-leg-mat-berger" : { 
+        "input" : ["e2e4", "e7e5", "f1c4", "f8c5", "d1h5", "b8c6", "h5f7"],
+        "output" : "wr,wn,wb,,wk,,wn,wr,wp,wp,wp,wp,,wp,wp,wp,,,,,,,,,,,wb,,wp,,,,,,bb,,bp,,,,,,bn,,,,,,bp,bp,bp,bp,,wq,bp,bp,br,,bb,bq,bk,,bn,br, 1-0"},
+    "4-leg-mat-decouv" : { 
+        "input" : ["e2e4", "e7e5", "d1h5", "g7g6", "h5f3", "f8g7", "f1c4", "g8e7", "c4f7", "e8f8", "f7g6", "h7g6", "e7f5", "f3f5", "f8g8", "f5f7"],
+        "output" : "wr,wn,wb,,wk,,wn,wr,wp,wp,wp,wp,,wp,wp,wp,,,,,,,,,,,,,wp,,,,,,,,bp,,,,,,,,,,wb,,bp,bp,bp,bp,,wq,bb,bp,br,bn,bb,bq,,,bk,br, 1-0"},
+    "4-leg-mat-parade" : { 
+        "input" : ["e2e4", "e7e5", "d2d4", "e5d4", "c1g5", "a7a6", "d1d4", "c7c6", "d4e5", "f8e7", "b1c3", "c6c5", "c3d5", "b8c6", "d5c7", "e8f8", "g5e7", "g8e7", "e5d6", "a8b8", "f1c4", "g7g6", "d6f6", "d8c7", "f6f7"],
+        "output" : "wr,,,,wk,,wn,wr,wp,wp,wp,,,wp,wp,wp,,,,,,,,,,,wb,,wp,,,,,,bp,,,,,,bp,,bn,,,,bp,,,bp,bq,bp,bn,wq,,bp,,br,bb,,,bk,,br, 1-0"},
+    "4-leg-pat" : { 
+        "input" : [ "c2c4", "g8f6", "d2d4", "c7c6", "c1f4", "d8b6", "d1d2", "f6e4", "d2c2", "d7d5", "f2f3", "e7e5", "f4e5", "b6a5", "b1c3", "e4c3", "b2c3", "d5c4", "e2e4", "b7b5", "g1e2", "b5b4", "e5f4", "b8a6", "e1f2", "f8e7", "e2g3", "c8e6", "g3f5", "e6f5", "e4f5", "e8g8", "f1c4", "e7f6", "h1e1", "b4c3", "f4e5", "f6e5", "e1e5", "a5a3", "a1c1", "a6c7", "c2c3", "a3d6", "f2g1", "a8d8", "a2a4", "c7d5", "c4d5", "c6d5", "c3c5", "d6a6", "c5b5", "a6b6", "c1d1", "b6d6", "d1e1", "d6a3", "b5a5", "d8d7", "a5b5", "a3d6", "e1c1", "h7h6", "b5c5", "d6a6", "c5b5", "a6d6", "h2h4", "f8d8", "c1c5", "d6b6", "g1h2", "b6f6", "h2g3", "a7a6", "b5c6", "d7d6", "c6c7", "d6d7", "c7c6", "d7d6", "c6b7", "d6d7", "b7b3", "f6d6", "g3h3", "g8h7", "g2g3", "h7g8", "h4h5", "g8h8", "h3g2", "h8h7", "g2h2", "h7g8", "h2h3", "g8h8", "h3h2", "h8g8", "h2g2", "g8h7", "a4a5", "h7g8", "b3a2", "g8h7", "g2h3", "h7g8", "h3h2", "g8h7", "h2g2", "h7g8", "g2h2", "g8h7", "h2h3", "h7g8", "a2b3", "g8h7", "h3h2", "h7g8", "h2h3", "d6f6", "c5d5", "f6c6", "d5d7", "c6d7", "b3b6", "g8h7", "g3g4", "f7f6", "e5e4", "d7c8", "e4e7", "c8b8", "b6b8", "d8d7", "e7d7"],
+        "output" : ",,,,,,,,,,,,,,,,,,,,,wp,,wk,,,,wp,,,wp,,wp,,,,,wp,,wp,bp,,,,,bp,,bp,,,,wr,,,bp,bk,,wq,,,,,,, 1/2-1/2"}
+}
