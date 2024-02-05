@@ -441,16 +441,18 @@ const ChessGL = () => {
     });
   };
 
-  const DisplayLights = ({}) => {
-    return (
-      <>
-        <pointLight position={[-4, 3, -4]} intensity={100} />
-        <pointLight position={[3, 3, -4]} intensity={100} />
-        <pointLight position={[3, 3, 3]} intensity={100} />
-        <pointLight position={[-4, 3, 3]} intensity={100} />
-      </>
-    );
-  };
+  const DisplayLights = ({}) => (
+    <>
+      <ambientLight intensity={1} />
+      <spotLight position={[0, 10, 0]} intensity={1000} />
+
+      {/* Side camera lights */}
+      <spotLight position={[0, 0, 10]} intensity={300} />
+      <spotLight position={[0, 0, -10]} intensity={300} />
+      <spotLight position={[10, 0, 0]} intensity={300} />
+      <spotLight position={[-10, 0, 0]} intensity={300} />
+    </>
+  );
 
   const kingLight = () => {
     if (chess.current !== undefined) {
