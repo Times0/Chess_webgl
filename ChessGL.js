@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Canvas, useThree, extend, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { BoxGeometry, RingGeometry } from "three";
@@ -92,8 +92,32 @@ const drawChessboard = (handleChessClick) => {
 const CameraControls = () => {
   const { camera, gl } = useThree();
   const controlsRef = useRef();
-  camera.position.set(0, 5, -5);
-  // set center of the scene at 1, 0, 0
+
+  camera.position.set(-0.5, 5, 5);
+
+  let angle = 0;
+
+  useEffect(() => {
+    let totalAngle = 0;
+    const timeoutId = setTimeout(() => {
+      const intervalId = setInterval(() => {
+        angle = (angle + 0.01) % (2 * Math.PI);
+        totalAngle += 0.01;
+
+        camera.position.x = 5 * Math.sin(angle);
+        camera.position.z = 5 * Math.cos(angle);
+
+        if (totalAngle >= Math.PI) {
+          camera.position.set(-0.5, 5, -5);
+          clearInterval(intervalId);
+        }
+      }, 1000 / 120);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   useFrame(() => controlsRef.current.update());
 
@@ -496,14 +520,12 @@ const ChessGL = () => {
   // Check if the pieces array is full
   useEffect(() => {
     if (pieces) {
-      console.log("Pieces array is full:", pieces);
       updatePiecePosition(pieces, game.board.canonicalPosition(), undefined);
     }
   }, [pieces]);
 
   // Render the component once pieces are loaded
   if (!pieces) {
-    // Return loading indicator or null
     return null;
   }
 
