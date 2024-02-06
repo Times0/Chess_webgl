@@ -7,7 +7,7 @@ import { Chess } from "./Chess";
 import { Vector3 } from "three";
 import { Square } from "./Square";
 import * as THREE from "three";
-import "./ChessGL.css";
+// import "./ChessGL.css";
 
 extend({ OrbitControls });
 const white = 0xffffff;
@@ -28,26 +28,42 @@ const ChessToAbsoluteCoord = (position) => {
     return [Math.abs(position.getRow() - 7) - 4, 0, position.getLine() - 4];
 };
 
+// Function to load all the pieces
 const loadPieces = async () => {
   const pieces = [];
-  let position = [0, 0, 0];
-  const pieceName = ["r", "n", "b", "q", "k", "b", "n", "r"];
-  const pieceNumber = [0, 0, 0, 0, 0, 1, 1, 1];
-  // Load pawns and their corresponding pieces
+  const pieceName = ["r", "n", "b", "q", "k"];
+  const pieceNumber = [0, 0, 0, 0, 0];
+  
   // using for and not foreach to allowed await
-  for (let index = 0; index < pieceName.length; index++) {
+  // load model once
+  for (let index = 0; index < pieceName.length; index++)
+  {
     pieces.push(
-      await loadModel(position, white, pieceName[index], pieceNumber[index])
+      await loadModel(white, pieceName[index], pieceNumber[index])
     );
-    pieces.push(await loadModel(position, white, "p", index));
-    pieces.push(
-      await loadModel(position, black, pieceName[index], pieceNumber[index], [
-        0,
-        Math.PI,
-        0,
-      ])
-    );
-    pieces.push(await loadModel(position, black, "p", index, [0, Math.PI, 0]));
+  }
+
+  // copy existing pieces to the other side of the board for white pieces
+  pieces.push(pieces[2].clone()); pieces[5].userData["number"] = 1;
+  pieces.push(pieces[1].clone()); pieces[6].userData["number"] = 1;
+  pieces.push(pieces[0].clone()); pieces[7].userData["number"] = 1;
+
+  // load white pawns
+  pieces.push(
+    await loadModel(white, 'p', 0)
+  );
+  for(let index = 1; index < 8; index++)
+  {
+    pieces.push(pieces[8].clone());
+    pieces[8 + index].userData["number"] = index;
+  }
+
+  // copy existing pieces to the other side of the board for black pieces
+  for(let index = 0; index < 16; index++)
+  {
+    pieces.push(pieces[index].clone());
+    changePieceColor(pieces[index + 16], black);
+    pieces[index + 16].userData["color"] = "b";
   }
 
   return pieces;
@@ -95,9 +111,8 @@ const CameraControls = () => {
 
   camera.position.set(-0.5, 5, 5);
 
-  let angle = 0;
-
   useEffect(() => {
+    let angle = 0;
     let totalAngle = 0;
     const timeoutId = setTimeout(() => {
       const intervalId = setInterval(() => {
@@ -117,7 +132,7 @@ const CameraControls = () => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, []);
+  }, [camera.position]);
 
   useFrame(() => controlsRef.current.update());
 
@@ -138,8 +153,18 @@ const findPieceByCoordinate = (pieces, position) => {
       piece.position["x"] === position[0] && piece.position["z"] === position[1]
   );
 };
+
+const changePieceColor = (piece, color) => {
+    piece.traverse((child) => {
+        if (child.isMesh && child.material) {
+        const newMaterial = child.material.clone();
+        newMaterial.color.setHex(color);
+        child.material = newMaterial;
+        }
+    });
+};
+
 const loadModel = (
-  position,
   color,
   pieceName,
   pieceNumber,
@@ -158,18 +183,11 @@ const loadModel = (
     const loader = new GLTFLoader();
     loader.load(path[pieceName], (gltf) => {
       const piece = gltf.scene;
-      piece.position.set(position[0], position[1], position[2]);
       piece.scale.set(15, 15, 15);
       piece.rotation.set(rotation[0], rotation[1], rotation[2]);
 
       // Traverse through children to set color
-      piece.traverse((child) => {
-        if (child.isMesh && child.material) {
-          const newMaterial = child.material.clone();
-          newMaterial.color.setHex(color);
-          child.material = newMaterial;
-        }
-      });
+      changePieceColor(piece, color);
 
       let pieceColor = "w";
       if (color === black) pieceColor = "b";
@@ -465,7 +483,7 @@ const ChessGL = () => {
     });
   };
 
-  const DisplayLights = ({}) => (
+  const DisplayLights = () => (
     <>
       <ambientLight intensity={1} />
       <spotLight position={[0, 10, 0]} intensity={1000} />
@@ -504,8 +522,8 @@ const ChessGL = () => {
     }
   };
 
-  // Skip the initial render
   useEffect(() => {
+    // Skip the initial render
     if (!isMounted.current) {
       isMounted.current = true;
       return;
@@ -524,11 +542,16 @@ const ChessGL = () => {
     }
   }, [pieces]);
 
-  // Render the component once pieces are loaded
+  // Render the loading state
   if (!pieces) {
-    return null;
+    return (
+        <div>
+            <h1>Loading...</h1>
+        </div>
+    );
   }
 
+  // Render the component once pieces are loaded
   return (
     <div className="ChessGL">
       <Canvas camera={{ position: [0, 0, 10] }}>
