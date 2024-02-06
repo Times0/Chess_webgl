@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Canvas, useThree, extend, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { BoxGeometry, RingGeometry } from "three";
@@ -14,7 +14,7 @@ const white = 0xffffff;
 const black = 0x333333;
 const red = 0xff0000;
 
-const thick = 0.1;
+const thick = 1;
 
 const AbsoluteToChessCoord = (position) => {
   if (position instanceof Vector3)
@@ -82,7 +82,7 @@ const drawChessboard = (handleChessClick) => {
 
   for (let x = -4; x < 4; x++) {
     for (let z = -4; z < 4; z++) {
-      const color = colors[(x + z + 8) % 2];
+      const color = colors[(x + z) % 2];
       squares.push(createSquare(x, z, color));
     }
   }
@@ -92,7 +92,32 @@ const drawChessboard = (handleChessClick) => {
 const CameraControls = () => {
   const { camera, gl } = useThree();
   const controlsRef = useRef();
-  camera.position.set(6, 5, 0);
+
+  camera.position.set(-0.5, 5, 5);
+
+  let angle = 0;
+
+  useEffect(() => {
+    let totalAngle = 0;
+    const timeoutId = setTimeout(() => {
+      const intervalId = setInterval(() => {
+        angle = (angle + 0.01) % (2 * Math.PI);
+        totalAngle += 0.01;
+
+        camera.position.x = 5 * Math.sin(angle);
+        camera.position.z = 5 * Math.cos(angle);
+
+        if (totalAngle >= Math.PI) {
+          camera.position.set(-0.5, 5, -5);
+          clearInterval(intervalId);
+        }
+      }, 1000 / 120);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   useFrame(() => controlsRef.current.update());
 
@@ -101,6 +126,7 @@ const CameraControls = () => {
       ref={controlsRef}
       args={[camera, gl.domElement]}
       maxPolarAngle={Math.PI / 2}
+      target={[-0.5, 0, -0.5]}
     />
   );
 };
@@ -153,7 +179,6 @@ const loadModel = (
         color: pieceColor,
         number: pieceNumber,
       };
-      console.log("loaded");
 
       resolve(piece);
     });
@@ -354,7 +379,6 @@ const ChessGL = () => {
     const endCaseRef = useRef(undefined);
     const [legalCases, setLegalCases] = useState([]);
     const promotingPiece = useRef(undefined);
-    console.log("tick", chess.current);
 
     return (
       <>
@@ -441,16 +465,18 @@ const ChessGL = () => {
     });
   };
 
-  const DisplayLights = ({}) => {
-    return (
-      <>
-        <pointLight position={[-4, 3, -4]} intensity={100} />
-        <pointLight position={[3, 3, -4]} intensity={100} />
-        <pointLight position={[3, 3, 3]} intensity={100} />
-        <pointLight position={[-4, 3, 3]} intensity={100} />
-      </>
-    );
-  };
+  const DisplayLights = ({}) => (
+    <>
+      <ambientLight intensity={1} />
+      <spotLight position={[0, 10, 0]} intensity={1000} />
+
+      {/* Side camera lights */}
+      <spotLight position={[0, 0, 10]} intensity={300} />
+      <spotLight position={[0, 0, -10]} intensity={300} />
+      <spotLight position={[10, 0, 0]} intensity={300} />
+      <spotLight position={[-10, 0, 0]} intensity={300} />
+    </>
+  );
 
   const kingLight = () => {
     if (chess.current !== undefined) {
@@ -494,14 +520,12 @@ const ChessGL = () => {
   // Check if the pieces array is full
   useEffect(() => {
     if (pieces) {
-      console.log("Pieces array is full:", pieces);
       updatePiecePosition(pieces, game.board.canonicalPosition(), undefined);
     }
   }, [pieces]);
 
   // Render the component once pieces are loaded
   if (!pieces) {
-    // Return loading indicator or null
     return null;
   }
 
