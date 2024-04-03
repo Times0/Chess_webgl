@@ -7,7 +7,7 @@ import { Chess } from "./Chess";
 import { Vector3 } from "three";
 import { Square } from "./Square";
 import * as THREE from "three";
-// import "./ChessGL.css";
+import "./ChessGL.css";
 
 extend({ OrbitControls });
 const white = 0xffffff;
@@ -30,37 +30,49 @@ const ChessToAbsoluteCoord = (position) => {
 
 // Function to load all the pieces
 const loadPieces = async () => {
+  console.log("Loading pieces");
   const pieces = [];
   const pieceName = ["r", "n", "b", "q", "k"];
   const pieceNumber = [0, 0, 0, 0, 0];
-  
-  // using for and not foreach to allowed await
-  // load model once
-  for (let index = 0; index < pieceName.length; index++)
-  {
-    pieces.push(
-      await loadModel(white, pieceName[index], pieceNumber[index])
-    );
+
+  // load model only once for each piece
+  for (let index = 0; index < pieceName.length; index++) {
+    let model;
+    if (pieceName[index] === "n") {
+      model = await loadModel(
+        white,
+        pieceName[index],
+        pieceNumber[index],
+        Math.PI
+      );
+    } else {
+      model = await loadModel(white, pieceName[index], pieceNumber[index]);
+    }
+    pieces.push(model);
   }
 
   // copy existing pieces to the other side of the board for white pieces
-  pieces.push(pieces[2].clone()); pieces[5].userData["number"] = 1;
-  pieces.push(pieces[1].clone()); pieces[6].userData["number"] = 1;
-  pieces.push(pieces[0].clone()); pieces[7].userData["number"] = 1;
+  const cloneAndRotatePiece = (piece, rotation) => {
+    const clonedPiece = piece.clone();
+    clonedPiece.rotation.set(0, clonedPiece.rotation.y + rotation, 0);
+    return clonedPiece;
+  };
+
+  const right_bishop = cloneAndRotatePiece(pieces[2], Math.PI);
+  const right_knight = cloneAndRotatePiece(pieces[1], 0);
+  const right_rook = cloneAndRotatePiece(pieces[0], Math.PI);
+
+  pieces.push(right_bishop, right_knight, right_rook);
 
   // load white pawns
-  pieces.push(
-    await loadModel(white, 'p', 0)
-  );
-  for(let index = 1; index < 8; index++)
-  {
+  pieces.push(await loadModel(white, "p", 0));
+  for (let index = 1; index < 8; index++) {
     pieces.push(pieces[8].clone());
     pieces[8 + index].userData["number"] = index;
   }
 
   // copy existing pieces to the other side of the board for black pieces
-  for(let index = 0; index < 16; index++)
-  {
+  for (let index = 0; index < 16; index++) {
     pieces.push(pieces[index].clone());
     changePieceColor(pieces[index + 16], black);
     pieces[index + 16].userData["color"] = "b";
@@ -109,39 +121,23 @@ const CameraControls = () => {
   const { camera, gl } = useThree();
   const controlsRef = useRef();
 
-  camera.position.set(-0.5, 5, 5);
+  const animate = () => {
+    controlsRef.current.update();
+  };
 
-  useEffect(() => {
-    let angle = 0;
-    let totalAngle = 0;
-    const timeoutId = setTimeout(() => {
-      const intervalId = setInterval(() => {
-        angle = (angle + 0.01) % (2 * Math.PI);
-        totalAngle += 0.01;
-
-        camera.position.x = 5 * Math.sin(angle);
-        camera.position.z = 5 * Math.cos(angle);
-
-        if (totalAngle >= Math.PI) {
-          camera.position.set(-0.5, 5, -5);
-          clearInterval(intervalId);
-        }
-      }, 1000 / 120);
-    }, 1000);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [camera.position]);
-
-  useFrame(() => controlsRef.current.update());
+  useFrame(animate);
 
   return (
     <orbitControls
       ref={controlsRef}
       args={[camera, gl.domElement]}
       maxPolarAngle={Math.PI / 2}
-      target={[-0.5, 0, -0.5]}
+      minPolarAngle={Math.PI / 5}
+      target={[-0.5, 0, -0.5]} // Look at the center of the board
+      enableDamping
+      rotateSpeed={0.5}
+      maxDistance={20}
+      minDistance={5}
     />
   );
 };
@@ -155,39 +151,50 @@ const findPieceByCoordinate = (pieces, position) => {
 };
 
 const changePieceColor = (piece, color) => {
-    piece.traverse((child) => {
-        if (child.isMesh && child.material) {
-        const newMaterial = child.material.clone();
-        newMaterial.color.setHex(color);
-        child.material = newMaterial;
-        }
-    });
+  piece.traverse((child) => {
+    if (child.isMesh && child.material) {
+      const newMaterial = child.material.clone();
+      newMaterial.color.setHex(color);
+      child.material = newMaterial;
+    }
+  });
 };
 
-const loadModel = (
-  color,
-  pieceName,
-  pieceNumber,
-  rotation = [0, 0, 0]
-) => {
+const loadModel = (color, pieceName, pieceNumber, rotation = 0) => {
   const path = {
-    r: "./ChessPieces/rook.glb",
-    n: "./ChessPieces/knight.glb",
-    b: "./ChessPieces/bishop.glb",
-    q: "./ChessPieces/queen.glb",
-    k: "./ChessPieces/king.glb",
-    p: "./ChessPieces/pawn.glb",
+    r: "./pieces/rook_2.glb",
+    n: "./pieces/knight_2.glb",
+    b: "./pieces/bishop_2.glb",
+    q: "./pieces/queen_2.glb",
+    k: "./pieces/king_2.glb",
+    p: "./pieces/pawn_2.glb",
   };
 
   return new Promise((resolve) => {
     const loader = new GLTFLoader();
     loader.load(path[pieceName], (gltf) => {
+      console.log("Loaded piece", pieceName);
       const piece = gltf.scene;
-      piece.scale.set(15, 15, 15);
-      piece.rotation.set(rotation[0], rotation[1], rotation[2]);
+      // Check if the piece is a queen and set a different scale
+      if (pieceName === "q" || pieceName === "k") {
+        piece.scale.set(1.5, 1.5, 1.5);
+      } else if (pieceName === "p") {
+        piece.scale.set(1, 0.8, 1);
+      } else if (pieceName === "n" || pieceName === "b" || pieceName === "r") {
+        piece.scale.set(1.2, 1.2, 1.2);
+      } else {
+        piece.scale.set(15, 15, 15);
+      }
+      piece.rotation.set(0, rotation, 0);
 
       // Traverse through children to set color
-      changePieceColor(piece, color);
+      piece.traverse((child) => {
+        if (child.isMesh && child.material) {
+          const newMaterial = child.material.clone();
+          newMaterial.color.setHex(color);
+          child.material = newMaterial;
+        }
+      });
 
       let pieceColor = "w";
       if (color === black) pieceColor = "b";
@@ -523,11 +530,11 @@ const ChessGL = () => {
   };
 
   useEffect(() => {
-    // Skip the initial render
-    if (!isMounted.current) {
-      isMounted.current = true;
-      return;
-    }
+    // // Skip the initial render
+    // if (!isMounted.current) {
+    //   isMounted.current = true;
+    //   return;
+    // }
 
     setGame(new Chess(true));
     loadPieces().then((loadedPieces) => {
@@ -545,21 +552,27 @@ const ChessGL = () => {
   // Render the loading state
   if (!pieces) {
     return (
+      console.log("loading"),
+      (
         <div>
-            <h1>Loading...</h1>
+          <h1>Loading...</h1>
         </div>
+      )
     );
   }
 
   // Render the component once pieces are loaded
   return (
-    <div className="ChessGL">
-      <Canvas camera={{ position: [0, 0, 10] }}>
-        <DisplayChessGame game={game} pieces={pieces} />
-        <CameraControls />
-        <DisplayLights />
-      </Canvas>
-    </div>
+    console.log("render"),
+    (
+      <div className="ChessGL">
+        <Canvas camera={{ position: [-0.5, 4, -10] }}>
+          <DisplayChessGame game={game} pieces={pieces} />
+          <CameraControls />
+          <DisplayLights />
+        </Canvas>
+      </div>
+    )
   );
 };
 

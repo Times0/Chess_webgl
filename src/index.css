@@ -1,0 +1,24 @@
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  --color-bg: black;
+  --color-fg: white;
+  --primary-color: #551a8b;
+  --color-selection-bg: #ccc;
+  --color-selection-fg: #ccc;
+  --color-links-fg: #c8aeff;
+  --color-links-bg-hover: rgba(255, 255, 255, 0.08);
+  --color-border: #3a3a3a;
+  --color-table-hover: #383838;
+  font-family: "GT Planar", sans-serif;
+}
+
+:root {
+  font-size: 16px;
+  color: var(--color-fg);
+  background-color: var(--color-bg);
+}
