@@ -348,7 +348,7 @@ export class King extends Piece{
         super('k', position, color);
     }
 
-    getLegalCases(board)
+    getLegalCases(board, chess)
     {
         let lcase=[];
         const pos = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
@@ -368,6 +368,9 @@ export class King extends Piece{
                     lcase.push(new Square(pair[0],pair[1]));
             }
         }
+
+        if(chess)
+            return lcase
 
         let offset=0;
         if(this.color === 'b')

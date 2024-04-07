@@ -15,6 +15,7 @@ const black = 0x333333;
 const red = 0xff0000;
 
 const thick = 1;
+const piece_path = "./pieces/09_11_pieces/";
 
 const AbsoluteToChessCoord = (position) => {
   if (position instanceof Vector3)
@@ -135,11 +136,13 @@ const CameraControls = () => {
       minPolarAngle={Math.PI / 5}
       target={[-0.5, 0, -0.5]} // Look at the center of the board
       enableDamping
+      enablePan={false}
       rotateSpeed={0.5}
       maxDistance={20}
       minDistance={5}
-    />
-  );
+      
+        />
+      );
 };
 
 // Only compares x and z
@@ -162,12 +165,12 @@ const changePieceColor = (piece, color) => {
 
 const loadModel = (color, pieceName, pieceNumber, rotation = 0) => {
   const path = {
-    r: "./pieces/rook_2.glb",
-    n: "./pieces/knight_2.glb",
-    b: "./pieces/bishop_2.glb",
-    q: "./pieces/queen_2.glb",
-    k: "./pieces/king_2.glb",
-    p: "./pieces/pawn_2.glb",
+    r: piece_path + "rook.glb",
+    n: piece_path + "knight.glb",
+    b: piece_path + "bishop.glb",
+    q: piece_path + "queen.glb",
+    k: piece_path + "king.glb",
+    p: piece_path + "pawn.glb",
   };
 
   return new Promise((resolve) => {

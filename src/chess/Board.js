@@ -241,13 +241,10 @@ export class Board{
         {
             if(this.getPiece(orig).passingPiece !== null)
             {
-                console.log('vfdp',new Square(dest.getLine()+offset,dest.getRow()));
-                console.log((this.getPiece(orig)).passingPiece);
                 if((this.getPiece(orig)).passingPiece.SquareEquals(new Square(dest.getLine()+offset,dest.getRow())))
                 {
                     this.removePiece(new Square(dest.getLine()+offset,dest.getRow()));
                     this.updatePieceArray();
-                    
                 }
             }
         } 
@@ -255,7 +252,7 @@ export class Board{
 
     move(orig, dest, turn, promotion)
     {         
-        this.iswin = 0;
+        let chess_flag = false;
         // if the square at orig is empty
         if(this.getPiece(orig) === null)
         {
@@ -281,7 +278,7 @@ export class Board{
             }
         }
         
-        let lcase = this.getPiece(orig).getLegalCases(this);
+        let lcase = this.getPiece(orig).getLegalCases(this, this.iswin === -1); // 2nd parameter to avoid castling if chess
         // if mouvement is illegal
         if(this.getIndexSquareArray(lcase,dest) === -1)
         {
@@ -332,6 +329,7 @@ export class Board{
                 if(this.debug)
                     console.log('Echec');
                 this.iswin = -1;
+                chess_flag = true;
             }
         }
 
@@ -346,6 +344,9 @@ export class Board{
             if(this.iswin !== 2)
                 this.iswin = 1;
         }
+
+        if(!chess_flag)
+            this.iswin = 0;
     
         return true;
     }

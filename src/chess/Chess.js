@@ -1,5 +1,6 @@
 import { Square } from './Square';
 import { Board } from './Board';
+// import { is } from '@react-three/fiber/dist/declarations/src/core/utils';
 
 export class Chess{
     constructor(debug=false)
@@ -30,7 +31,8 @@ export class Chess{
     {
         this.board.printBoard();
         this.board.canonicalPosition();
-        if(result !== undefined){console.log(result);}
+        if(result !== undefined)
+            console.log(result);
     }
 
     move(cmdOrOrig, dest, promo='q')
@@ -99,6 +101,6 @@ export class Chess{
 
     getPieceMove(orig)
     {
-        return this.board.getPiece(orig).getLegalCases(this.board);
+        return this.board.getPiece(orig).getLegalCases(this.board, this.board.iswin === -1);
     }
 }
