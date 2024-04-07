@@ -17,18 +17,6 @@ const red = 0xff0000;
 const thick = 1;
 const piece_path = "./pieces/09_11_pieces/";
 
-const AbsoluteToChessCoord = (position) => {
-  if (position instanceof Vector3)
-    return [Math.abs(position["x"] - 7 + 4), position["y"], position["z"] + 4];
-};
-
-const ChessToAbsoluteCoord = (position) => {
-  if (position instanceof Vector3)
-    return [Math.abs(position["x"] - 7) - 4, position["y"], position["z"] - 4];
-  else if (position instanceof Square)
-    return [Math.abs(position.getRow() - 7) - 4, 0, position.getLine() - 4];
-};
-
 // Function to load all the pieces
 const loadPieces = async () => {
   console.log("Loading pieces");
@@ -109,8 +97,8 @@ const drawChessboard = (handleChessClick) => {
   const squares = [];
   const colors = ["w", "b"];
 
-  for (let x = -4; x < 4; x++) {
-    for (let z = -4; z < 4; z++) {
+  for (let x = 0; x < 8; x++) {
+    for (let z = 0; z < 8; z++) {
       const color = colors[(x + z) % 2];
       squares.push(createSquare(x, z, color));
     }
@@ -134,11 +122,11 @@ const CameraControls = () => {
       args={[camera, gl.domElement]}
       maxPolarAngle={Math.PI / 2}
       minPolarAngle={Math.PI / 5}
-      target={[-0.5, 0, -0.5]} // Look at the center of the board
+      target={[3.5, 0, 3.5]} // Look at the center of the board
       enableDamping
       enablePan={false}
       rotateSpeed={0.5}
-      maxDistance={20}
+      maxDistance={10}
       minDistance={5}
       
         />
@@ -189,7 +177,8 @@ const loadModel = (color, pieceName, pieceNumber, rotation = 0) => {
         piece.scale.set(15, 15, 15);
       }
       piece.rotation.set(0, rotation, 0);
-
+      piece.position.set(4, 0, 4);
+      
       // Traverse through children to set color
       piece.traverse((child) => {
         if (child.isMesh && child.material) {
@@ -212,6 +201,7 @@ const loadModel = (color, pieceName, pieceNumber, rotation = 0) => {
     });
   });
 };
+
 const ChessGL = () => {
   const findPieceIndexByCoordinate = (pieces, position) => {
     return pieces.findIndex(
@@ -233,7 +223,7 @@ const ChessGL = () => {
   const drawLegalCase = (legalCases) => {
     const createRing = (x, z, color) => {
       const geometry = new RingGeometry(0.32, 0.45, 32); // Adjust inner and outer radius as needed
-      const position = new Vector3(x, 0.001, z); // Adjust the y position for thickness
+      const position = new Vector3(7 - x, 0.001, z); // Adjust the y position for thickness
       const rotation = [-Math.PI / 2, 0, 0];
       return (
         <mesh
@@ -249,37 +239,35 @@ const ChessGL = () => {
 
     let cases = [];
     legalCases.forEach((c) => {
-      let position = ChessToAbsoluteCoord(c);
-      cases.push(createRing(position[0], position[2], red));
+      cases.push(createRing(c['row'], c['line'], red));
     });
     return cases;
   };
 
   const removePiece = (tpiece) => {
     if (tpiece.userData["color"] === "w") {
-      let ipos = [-5, 2.5];
+      let ipos = [-1, 0.5];
       let t;
       while (
-        (t = findPieceByCoordinate(pieces, ipos)) !== undefined &&
-        t !== tpiece
+        (t = findPieceByCoordinate(pieces, ipos)) !== undefined && t !== tpiece
       ) {
-        if (ipos[1] - 1 < -3.5) {
+        if (ipos[1] > 6) {
           ipos[0] -= 1;
-          ipos[1] = 2.5;
-        } else ipos[1] -= 1;
+          ipos[1] = 0.5;
+        } else ipos[1] += 1;
       }
       tpiece.position.set(ipos[0], -thick, ipos[1]);
     } else {
-      let ipos = [4, -3.5];
+      let ipos = [8, 6.5];
       let t;
       while (
         (t = findPieceByCoordinate(pieces, ipos)) !== undefined &&
         t !== tpiece
       ) {
-        if (ipos[1] + 1 > 2.5) {
+        if (ipos[1] < 1) {
           ipos[0] += 1;
-          ipos[1] = -3.5;
-        } else ipos[1] += 1;
+          ipos[1] = 6.5;
+        } else ipos[1] -= 1;
       }
       tpiece.position.set(ipos[0], -thick, ipos[1]);
     }
@@ -333,23 +321,22 @@ const ChessGL = () => {
 
       if (startPieceRef.current !== undefined) {
         startPieceRef.current.position["y"] = 1;
-        startPosition = AbsoluteToChessCoord(startPieceRef.current.position);
+        startPosition = startPieceRef.current.position;
         setLegalCases(
-          game.getPieceMove(new Square(startPosition[2], startPosition[0]))
+          game.getPieceMove(new Square(startPosition['z'], 7 - startPosition['x']))
         );
       }
 
-      if (
-        startPieceRef.current !== undefined &&
-        endCaseRef.current !== undefined
-      ) {
-        endPosition = AbsoluteToChessCoord(endCaseRef.current);
+      if(startPieceRef.current !== undefined &&
+        endCaseRef.current !== undefined)
+      {
+        endPosition = endCaseRef.current;
         if (startPieceRef.current.userData["type"] === "p") {
-          if (endPosition[2] === 0 || endPosition[2] === 7) {
+          if (endPosition['z'] === 0 || endPosition['z'] === 7) {
             let moveCases = game.getPieceMove(
-              new Square(startPosition[2], startPosition[0])
+              new Square(startPosition['z'], startPosition['x'])
             );
-            if (isVectorInsideCases(endPosition, moveCases)) {
+            if(isVectorInsideCases(endPosition, moveCases)) { // error because of isVectorInsideCases
               promotingPiece.current = startPieceRef.current;
               setLegalCases([]);
               startPieceRef.current = undefined;
@@ -359,13 +346,15 @@ const ChessGL = () => {
         }
 
         let r = game.move(
-          new Square(startPosition[2], startPosition[0]),
-          new Square(endPosition[2], endPosition[0]),
+          new Square(startPosition['z'], 7 - startPosition['x']),
+          new Square(endPosition['z'], 7 - endPosition['x']),
           promotion
         );
-        if (r !== null) {
-          updatePiecePosition(pieces, r, endCaseRef.current);
 
+        if (r !== null)
+        {
+          updatePiecePosition(pieces, r, endCaseRef.current);
+          startPieceRef.current.position["y"] = 0;
           startPieceRef.current = undefined;
           setLegalCases([]);
         }
@@ -376,7 +365,9 @@ const ChessGL = () => {
     const handleChessClick = (event, position) => {
       event.stopPropagation();
       console.log(position);
-      console.log(AbsoluteToChessCoord(position));
+
+      if(position['x'] < 0 || position['x'] >= 8) 
+        return;
 
       let tpiece = findPieceByCoordinate(pieces, [
         position["x"],
@@ -384,19 +375,17 @@ const ChessGL = () => {
       ]);
 
       // If click on the piece mounted up
-      if (startPieceRef.current === tpiece) startPieceRef.current = undefined;
-      else if (tpiece !== undefined) {
+      if (startPieceRef.current === tpiece) 
+        startPieceRef.current = undefined;
+      else if (tpiece !== undefined)
+      {
         // If click on a piece of the right color and the piece is on the board
-        let tposition = AbsoluteToChessCoord(position);
-        if (
-          tpiece.userData["color"] === game.getTurn() &&
-          tposition[0] >= 0 &&
-          tposition[0] < 8
-        )
+        if(tpiece.userData["color"] === game.getTurn())
           startPieceRef.current = tpiece;
-        else if (startPieceRef.current !== undefined)
+        else if(startPieceRef.current !== undefined)
           endCaseRef.current = position;
-      } else if (startPieceRef.current !== undefined)
+      } 
+      else if (startPieceRef.current !== undefined)
         endCaseRef.current = position;
 
       handlePieceMove(game, pieces);
@@ -428,7 +417,6 @@ const ChessGL = () => {
 
   const [pieces, setPieces] = useState();
   const [game, setGame] = useState();
-  const isMounted = useRef(false);
   const chess = useRef(undefined);
 
   const updatePiecePosition = (pieces, cmd, endCaseRef) => {
@@ -445,40 +433,38 @@ const ChessGL = () => {
     else chess.current = undefined;
 
     if (endCaseRef !== undefined) {
-      let tpiece = findPieceByCoordinate(pieces, [
-        endCaseRef["x"],
-        endCaseRef["z"],
-      ]);
+      let tpiece = findPieceByCoordinate(pieces, [endCaseRef["x"], endCaseRef["z"]]);
       // if there is a take, remove the piece from the board
       if (tpiece !== undefined) removePiece(tpiece);
     }
 
     // pieceMap represents the pieces at the good place on the board
     pieces.forEach((piece, index) => {
-      let position = AbsoluteToChessCoord(piece.position);
-      if (
-        piece.userData["type"] === ref[position[2] * 8 + position[0]][1] &&
-        piece.userData["color"] === ref[position[2] * 8 + position[0]][0]
-      ) {
+      let position = piece.position;
+      
+      // skip the piece if it is not on the board
+      if (position['x'] < 0 || position['x'] >= 8 || position['z'] < 0 || position['z'] >= 8)
+        return;
+  
+      if (piece.userData["type"] === ref[position['z'] * 8 + (7 - position['x'])][1] &&
+        piece.userData["color"] === ref[position['z'] * 8 + (7 - position['x'])][0])
+      {
         pieceMap[index] = 1;
-        refMap[position[2] * 8 + position[0]] = 1;
+        refMap[position['z'] * 8 + (7 - position['x'])] = 1;
       }
     });
 
     ref.forEach((elem, index) => {
       if (elem.length !== 0 && refMap[index] === undefined) {
         for (let index2 in pieces) {
-          if (
-            pieceMap[index2] === undefined &&
+          if(pieceMap[index2] === undefined &&
             elem[0] === pieces[index2].userData["color"] &&
-            elem[1] === pieces[index2].userData["type"]
-          ) {
-            let position = AbsoluteToChessCoord(pieces[index2].position);
-            if (position[0] >= 0 && position[0] < 8) {
-              let p = ChessToAbsoluteCoord(
-                new Vector3(index % 8, 0, (index - (index % 8)) / 8)
-              );
-              pieces[index2].position.set(p[0], p[1], p[2]);
+            elem[1] === pieces[index2].userData["type"])
+          {
+            let position = pieces[index2].position;
+            if (position['x'] >= 0 && position['x'] < 8) {
+              let p = new Vector3(7 - index % 8, 0, (index - (index % 8)) / 8)
+              pieces[index2].position.set(p['x'], p['y'], p['z']);
               pieceMap[index2] = 1;
               break;
             }
@@ -487,7 +473,7 @@ const ChessGL = () => {
       }
     });
 
-    // remove piece who are no more on board
+    // remove piece who are no longer on board
     pieces.forEach((piece, index) => {
       if (pieceMap[index] !== 1) removePiece(piece);
     });
@@ -499,10 +485,10 @@ const ChessGL = () => {
       <spotLight position={[0, 10, 0]} intensity={1000} />
 
       {/* Side camera lights */}
-      <spotLight position={[0, 0, 10]} intensity={300} />
-      <spotLight position={[0, 0, -10]} intensity={300} />
-      <spotLight position={[10, 0, 0]} intensity={300} />
-      <spotLight position={[-10, 0, 0]} intensity={300} />
+      <spotLight position={[-4, 0, -4]} intensity={300} />
+      <spotLight position={[12, 0, 12]} intensity={300} />
+      <spotLight position={[-4, 0, 12]} intensity={300} />
+      <spotLight position={[12, 0, -4]} intensity={300} />
     </>
   );
 
@@ -550,7 +536,7 @@ const ChessGL = () => {
     if (pieces) {
       updatePiecePosition(pieces, game.board.canonicalPosition(), undefined);
     }
-  }, [pieces]);
+  }, [pieces, game]);
 
   // Render the loading state
   if (!pieces) {
