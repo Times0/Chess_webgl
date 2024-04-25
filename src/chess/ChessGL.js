@@ -141,6 +141,7 @@ const CameraControls = () => {
       rotateSpeed={0.5}
       maxDistance={20}
       minDistance={5}
+      enablePan={false}
     />
   );
 };
