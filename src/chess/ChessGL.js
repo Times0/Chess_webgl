@@ -37,23 +37,14 @@ const loadPieces = async (theme) => {
 
   // load model only once for each piece
   for (let index = 0; index < pieceName.length; index++) {
-    let model;
-    if (pieceName[index] === "n") {
-      model = await loadModel(
-        theme,
-        white,
-        pieceName[index],
-        pieceNumber[index],
-        Math.PI
-      );
-    } else {
-      model = await loadModel(
-        theme,
-        white,
-        pieceName[index],
-        pieceNumber[index]
-      );
-    }
+    let model = await loadModel(
+      theme,
+      white,
+      pieceName[index],
+      pieceNumber[index],
+      -Math.PI / 2
+    );
+
     pieces.push(model);
   }
 
@@ -64,22 +55,28 @@ const loadPieces = async (theme) => {
     return clonedPiece;
   };
 
-  const right_bishop = cloneAndRotatePiece(pieces[2], Math.PI);
+  const right_bishop = cloneAndRotatePiece(pieces[2], 0);
   const right_knight = cloneAndRotatePiece(pieces[1], 0);
-  const right_rook = cloneAndRotatePiece(pieces[0], Math.PI);
+  const right_rook = cloneAndRotatePiece(pieces[0], 0);
 
   pieces.push(right_bishop, right_knight, right_rook);
 
   // load white pawns
-  pieces.push(await loadModel(theme, white, "p", 0));
+  pieces.push(await loadModel(theme, white, "p", 0, -Math.PI / 2));
   for (let index = 1; index < 8; index++) {
     pieces.push(pieces[8].clone());
     pieces[8 + index].userData["number"] = index;
   }
 
-  // copy existing pieces to the other side of the board for black pieces
+  // copy existing pieces to the other side of the board for black pieces and rotate them
   for (let index = 0; index < 16; index++) {
     pieces.push(pieces[index].clone());
+    const rotation = [
+      pieces[index].rotation.x,
+      pieces[index].rotation.y + Math.PI,
+      pieces[index].rotation.z,
+    ];
+    pieces[index + 16].rotation.set(rotation[0], rotation[1], rotation[2]);
     changePieceColor(pieces[index + 16], black);
     pieces[index + 16].userData["color"] = "b";
   }
@@ -599,6 +596,18 @@ const ChessGL = () => {
         <CameraControls />
         <DisplayLights />
       </Canvas>
+      <div className="credits">
+        <p>
+          Made in collaboration with{" "}
+          <a
+            href="https://www.lucas-deletang.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Lucas Deletang
+          </a>
+        </p>
+      </div>
     </div>
   );
 };
