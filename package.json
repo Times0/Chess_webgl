@@ -1,7 +1,6 @@
 {
   "name": "chess_webgl",
   "version": "0.1.0",
-  "homepage": "https://times0.github.io/Chess_webgl",
   "private": true,
   "dependencies": {
     "@react-three/fiber": "^8.15.16",
