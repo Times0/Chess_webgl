@@ -33,7 +33,7 @@ function App() {
       >
         <h2>Welcome to ChessGL!</h2>
         <p>
-          Made at 80% by the goat{" "}
+          Made mostly by the goat of react {""}
           <a
             href="https://www.lucas-deletang.com"
             target="_blank"
