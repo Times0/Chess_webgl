@@ -33,7 +33,7 @@ function App() {
       >
         <h2>Welcome to ChessGL!</h2>
         <p>
-          Made with {""}
+          Made with {""} (the goat)
           <a
             href="https://www.lucas-deletang.com"
             target="_blank"
