@@ -16,6 +16,11 @@ function App() {
   useEffect(() => {
     setModalIsOpen(true);
     setIsVisible(false);
+
+    // Cleanup function to close modal on unmount
+    return () => {
+      setModalIsOpen(false);
+    };
   }, []);
 
   return (
